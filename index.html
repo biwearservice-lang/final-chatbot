@@ -1,42 +1,131 @@
-<script type="text/javascript">
-  // 1️⃣ Read URL parameters (MATCHING YOUR URL)
-  const params = new URLSearchParams(window.location.search);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title id="page-title">Hey There</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  const personName = params.get("name") || "There";
-  const companyName = params.get("company_name") || "Default Company";
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      height: 100vh;
+      background: radial-gradient(
+          circle at top left,
+          rgba(130, 76, 255, 0.25),
+          transparent 50%
+        ),
+        linear-gradient(135deg, #160022, #0b0014);
+      color: white;
+      display: flex;
+      align-items: center;
+      padding-left: 80px;
+    }
 
-  // 2️⃣ Update page content
-  document.getElementById("company-name").textContent = personName;
-  document.getElementById("company-badge").textContent = companyName;
-  document.getElementById("page-title").textContent =
-    personName + " | " + companyName;
+    .container {
+      max-width: 720px;
+    }
 
-  // 3️⃣ Load Voiceflow chatbot
-  (function (d, t) {
-    var v = d.createElement(t);
-    var s = d.getElementsByTagName(t)[0];
+    h1 {
+      font-size: 56px;
+      line-height: 1.1;
+      margin: 0 0 20px 0;
+      font-weight: 800;
+    }
 
-    v.onload = function () {
-      window.voiceflow.chat.load({
-        verify: {
-          projectID: "6962863ea3c28a27fd60ce69"
-        },
-        url: "https://general-runtime.voiceflow.com",
-        versionID: "production",
-        launch: {
-          event: {
-            type: "launch",
-            payload: {
-              user_name: personName,
-              company_name: companyName
+    .name {
+      color: #b184ff;
+    }
+
+    p {
+      font-size: 18px;
+      color: #d6cfff;
+      max-width: 520px;
+      margin-bottom: 30px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 15px;
+      font-weight: 600;
+      color: white;
+      backdrop-filter: blur(6px);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>
+      Hey <span id="person-name" class="name">There</span>,
+    </h1>
+
+    <p>
+      I have built a smart AI assistant that talks to your website
+      visitors, answers questions, and captures leads while you
+      focus on your business.
+    </p>
+
+    <div class="badge">
+      Powered by <span id="company-name">Default Company</span>
+    </div>
+  </div>
+
+  <!-- ===============================
+       DYNAMIC NAME + COMPANY SCRIPT
+       =============================== -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    const personName =
+      params.get("name") || "There";
+
+    const companyName =
+      params.get("company_name") || "Default Company";
+
+    document.getElementById("person-name").textContent = personName;
+    document.getElementById("company-name").textContent = companyName;
+
+    document.getElementById("page-title").textContent =
+      "Hey " + personName;
+  </script>
+
+  <!-- ===============================
+       VOICEFLOW CHATBOT
+       =============================== -->
+  <script type="text/javascript">
+    (function (d, t) {
+      var v = d.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+
+      v.onload = function () {
+        window.voiceflow.chat.load({
+          verify: {
+            projectID: "6962863ea3c28a27fd60ce69"
+          },
+          url: "https://general-runtime.voiceflow.com",
+          versionID: "production",
+          launch: {
+            event: {
+              type: "launch",
+              payload: {
+                user_name: new URLSearchParams(window.location.search).get("name"),
+                company_name: new URLSearchParams(window.location.search).get("company_name")
+              }
             }
           }
-        }
-      });
-    };
+        });
+      };
 
-    v.src = "https://cdn.voiceflow.com/widget/bundle.mjs";
-    v.type = "text/javascript";
-    s.parentNode.insertBefore(v, s);
-  })(document, "script");
-</script>
+      v.src = "https://cdn.voiceflow.com/widget/bundle.mjs";
+      v.type = "text/javascript";
+      s.parentNode.insertBefore(v, s);
+    })(document, "script");
+  </script>
+
+</body>
+</html>
