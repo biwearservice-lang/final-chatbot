@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="page-title">Client AI Assistant</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top, #2b0a3d, #0b0214);
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      height: 100%;
+      padding: 60px;
+      box-sizing: border-box;
+    }
+
+    .left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .left h1 {
+      font-size: 64px;
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    .left h1 span {
+      color: #b36bff;
+    }
+
+    .left p {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #ddd;
+      max-width: 520px;
+    }
+
+    .badge {
+      margin-top: 30px;
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 16px 24px;
+      border-radius: 16px;
+      font-weight: bold;
+      width: fit-content;
+    }
+
+    /* Reserve space so chatbot sits nicely */
+    .chat-space {
+      width: 420px;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+        padding: 30px;
+      }
+      .chat-space {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="left">
+      <h1>Hey <span id="company-name">Client</span>,</h1>
+      <p>
+        I built a smart AI assistant that talks to your website visitors,
+        answers questions, and captures leads while you focus on your business.
+      </p>
+
+      <div class="badge">
+        Powered by <span id="company-badge">Your Company</span>
+      </div>
+    </div>
+
+    <div class="chat-space"></div>
+  </div>
+
+  <!-- ✅ VOICEFLOW CHATBOT WITH DYNAMIC COMPANY -->
+  <script type="text/javascript">
+    // 1️⃣ Get company name from URL
+    const params = new URLSearchParams(window.location.search);
+    const companyName = params.get("company") || "Default Company";
+
+    // 2️⃣ Update text on page
+    document.getElementById("company-name").textContent = companyName;
+    document.getElementById("company-badge").textContent = companyName;
+    document.getElementById("page-title").textContent = companyName + " AI Assistant";
+
+    // 3️⃣ Load Voiceflow widget
+    (function (d, t) {
+      var v = d.createElement(t);
+      var s = d.getElementsByTagName(t)[0];
+
+      v.onload = function () {
+        window.voiceflow.chat.load({
+          verify: {
+            projectID: "6962863ea3c28a27fd60ce69"
+          },
+          url: "https://general-runtime.voiceflow.com",
+          versionID: "production",
+          launch: {
+            event: {
+              type: "launch",
+              payload: {
+                company_name: companyName
+              }
+            }
+          }
+        });
+      };
+
+      v.src = "https://cdn.voiceflow.com/widget/bundle.mjs";
+      v.type = "text/javascript";
+      s.parentNode.insertBefore(v, s);
+    })(document, "script");
+  </script>
+
+</body>
+</html>
